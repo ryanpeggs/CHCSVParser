@@ -28,13 +28,11 @@
 #import "CHCSVParser.h"
 
 #define TEST_ARRAYS(_actual, _expected) do {\
-NSLog(@"expected: %@\nrecieved: %@", _expected, _actual); \
 XCTAssertEqual(_actual.count, _expected.count, @"incorrect number of records"); \
 if (_actual.count == _expected.count) { \
 for (NSUInteger _record = 0; _record < _actual.count; ++_record) { \
 NSArray *_actualRow = _actual[_record]; \
 NSArray *_expectedRow = _expected[_record]; \
-NSLog(@"expected: %@\nrecieved: %@", _expectedRow, _actualRow); \
 XCTAssertEqual(_actualRow.count, _expectedRow.count, @"incorrect number of fields on line %lu", _record + 1); \
 if (_actualRow.count == _expectedRow.count) { \
 for (NSUInteger _field = 0; _field < _actualRow.count; ++_field) { \
