@@ -383,11 +383,6 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
         }
     }
     
-    if ([_sanitizedField hasPrefix:@"\""] && [_sanitizedField hasSuffix:@"\""] && ![_sanitizedField isEqualToString:@"\""]) {
-        _sanitizedField = [[_sanitizedField substringFromIndex:1] mutableCopy];
-        _sanitizedField = [[_sanitizedField substringToIndex:_sanitizedField.length-1] mutableCopy];
-    }
-    
     if (parsedField) {
         // consume trailing whitespace
         [self _parseFieldWhitespace];
@@ -397,7 +392,6 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
 }
 
 - (BOOL)_parseEscapedField {
-    [_sanitizedField appendFormat:@"%C", [self _peekCharacter]];
     [self _advance]; // consume the opening double quote
     
     NSCharacterSet *newlines = [NSCharacterSet newlineCharacterSet];
@@ -423,7 +417,6 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
                 [self _advance];
                 [self _advance];
             } else if (next == DOUBLE_QUOTE && [self _peekPeekCharacter] != _delimiter && ![newlines characterIsMember:[self _peekPeekCharacter]] && [self _peekPeekCharacter] != NULLCHAR) {
-                [_sanitizedField appendFormat:@"%C", next];
                 [self _advance];
                 isSubTerminated = YES;
             } else {
@@ -438,7 +431,6 @@ NSString *const CHCSVErrorDomain = @"com.davedelong.csv";
     }
 
     if ([self _peekCharacter] == DOUBLE_QUOTE) {
-        [_sanitizedField appendFormat:@"%c", DOUBLE_QUOTE];
         [self _advance];
         return YES;
     }
